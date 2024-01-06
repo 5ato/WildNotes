@@ -4,11 +4,12 @@ from telegram import (
 from telegram.ext import (
     ApplicationBuilder, CommandHandler, ContextTypes,
     MessageHandler, filters, ConversationHandler,
-    CallbackQueryHandler, CallbackContext
+    CallbackQueryHandler, CallbackContext, Defaults
 )
+from telegram.constants import ParseMode
 
 from typing import Sequence
-from datetime import time
+from datetime import time, timezone, timedelta
 
 from database.logic import UserService, ProductService
 from database.core import get_engine, get_sessionmaker
@@ -65,7 +66,7 @@ async def article_product(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     w: Product = context.bot_data['product_service'].create(update.effective_user.id, update.message.text)
     context.job_queue.run_daily(
         callback=callback_three_days,
-        time=time(15, 00, 00), days=(1, 4),
+        time=time(22, 18, 30), days=(2, 4, 2, 4, 2, 4, 2),
         data={
             'article': update.message.text,
             'previous_price': w.price,
@@ -130,7 +131,8 @@ async def callback_product(update: Update, context: ContextTypes.DEFAULT_TYPE) -
 
 
 if __name__ == '__main__':
-    application = ApplicationBuilder().token(Bot.token).build()
+    default = Defaults(ParseMode.HTML, tzinfo=timezone(timedelta(hours=5), name='UZ'))
+    application = ApplicationBuilder().token(Bot.token).defaults(default).build()
     conv_handler = ConversationHandler(
         entry_points=[
             CommandHandler('start', start),
