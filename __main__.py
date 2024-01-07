@@ -57,8 +57,8 @@ async def callback_three_days(context: CallbackContext):
     await context.bot.send_photo(chat_id=context.job.chat_id, photo=context.job.data['image_product'])
     await context.bot.send_message(
         chat_id=context.job.chat_id,
-        text=f'Бренд: {w.brand}😎\nКоличество отзывов: {w.feedbacks}👥\nОтзывы пользователей: {w.rating_feedbacks}🌌\
-            \nРейтинг: {w.rating}⭐️\nНазвание: {w.name}🙊\nСтарая Цена: {context.job.data["previous_price"]}💸\nНовая цена: {w.price}💵',
+        text=f'😎Бренд: {w.brand}\n👥Количество отзывов: {w.feedbacks}\n🗣Отзывы пользователей: {w.rating_feedbacks}\
+            \n⭐️Рейтинг: {w.rating}\n🙊Название: {w.name}\n💸Старая Цена: {context.job.data["previous_price"]}\n💵Новая цена: {w.price}',
     )
 
 
@@ -66,7 +66,7 @@ async def article_product(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     w: Product = context.bot_data['product_service'].create(update.effective_user.id, update.message.text)
     context.job_queue.run_daily(
         callback=callback_three_days,
-        time=time(22, 18, 30), days=(2, 4, 2, 4, 2, 4, 2),
+        time=time(hour=15), days=(2, 4, 2, 4, 2, 4, 2),
         data={
             'article': update.message.text,
             'previous_price': w.price,
@@ -78,7 +78,7 @@ async def article_product(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     await context.bot.send_photo(chat_id=update.effective_chat.id, photo=w.url_image)
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text=f'Бренд: {w.brand}😎\nКоличество отзывов: {w.feedbacks}👥\nОтзывы пользователей: {w.rating_feedbacks}🌌\nРейтинг: {w.rating}⭐️\nНазвание: {w.name}🙊\nЦена: {w.price}💸',
+        text=f'😎Бренд: {w.brand}\n👥Количество отзывов: {w.feedbacks}\n🗣Отзывы пользователей: {w.rating_feedbacks}\n⭐️Рейтинг: {w.rating}\n📖Название: {w.name}\n💸Цена: {w.price}',
         reply_markup=ReplyKeyboardMarkup(
             [['Отмена']], one_time_keyboard=True, input_field_placeholder='Артикул товара:', resize_keyboard=True
         ),
@@ -125,7 +125,7 @@ async def callback_product(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     await context.bot.send_photo(chat_id=update.effective_chat.id, photo=w.url_image)
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text=f'Бренд: {w.brand}😎\nКоличество отзывов: {w.feedbacks}👥\nОтзывы пользователей: {w.rating_feedbacks}🌌\nРейтинг: {w.rating}⭐️\nНазвание: {w.name}🙊\nЦена: {w.price}💸',
+        text=f'😎Бренд: {w.brand}\n👥Количество отзывов: {w.feedbacks}\n🗣Отзывы пользователей: {w.rating_feedbacks}\n⭐️Рейтинг: {w.rating}\n📖Название: {w.name}\n💸Цена: {w.price}',
         reply_markup=ReplyKeyboardMarkup([['Отправить артикулы']], one_time_keyboard=True, resize_keyboard=True)
     )
 
